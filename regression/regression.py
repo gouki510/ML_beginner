@@ -2,6 +2,8 @@ import numpy as np
 from numpy import linalg as LA
 import pandas as pd
 import argparse
+import itertools
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='Process Regression')
 parser.add_argument('-f','--features',action="append",help='select feture')
@@ -13,10 +15,12 @@ class Regression:
         print("selected fetures:",self.features)
         self.X_data = df.loc[:,self.features].values
         self.Y_data = df.loc[:,'mpg'].values
+        self.before_loss = 0
+        self.after_loss = 0
         if 'horsepower' in self.features:
             idx = self.features.index("horsepower")
             self.X_data,self.Y_data = self.preprocess(self.X_data,self.Y_data,idx)
-            print(self.X_data.shape)
+            
     def preprocess(self,X_data,Y_data,idx):
         new_data = []
         
@@ -35,28 +39,29 @@ class Regression:
                 new_Y.append(t)
         return np.array(new_data),np.array(new_Y)
 
-    def predict(self,X_data,Y_data):
+    def predict(self):
 
-        num_data,n_feature = X_data.shape
-        X_data = X_data.astype("float")
+        num_data,n_feature = self.X_data.shape
+        X_data = self.X_data.astype("float")
         b = np.ones((num_data,1))
         X_data = np.hstack((X_data,b))
 
         # 重みとバイアスの初期化
         W = np.random.randn(n_feature+1)
         pred1 = np.dot(X_data,W.T)
-        loss1 = LA.norm(Y_data-pred1)/2
+        loss1 = LA.norm(self.Y_data-pred1)/2
+        self.before_loss = loss1
 
         # Wを更新 ムーア・ペローンズの疑似逆行列
         A_T =  LA.inv(np.dot(X_data.T,X_data))
-        W = np.dot(np.dot(A_T,X_data.T),Y_data)
+        W = np.dot(np.dot(A_T,X_data.T),self.Y_data)
         pred2 = np.dot(X_data,W.T)
-        loss2 = loss = LA.norm(Y_data-pred2)/2
-        print("before loss:",loss1)
-        print("after loss:",loss2)
+        loss2 = loss = LA.norm(self.Y_data-pred2)/2
+        self.after_loss = loss2
 
 if __name__=="__main__":
     args = parser.parse_args()
     features = args.features
     model = Regression(features)
-    model.predict(model.X_data,model.Y_data)
+    model.predict()
+    print("L2 loss",model.after_loss)
