@@ -13,8 +13,8 @@ pip install pandas
 
 Auto-mpg have 8 features as below  
 This heatmap means Correlation coefficient
-![EDA](EDA.png)　　
-For example, Relation between mpg and weight,horsepower is below　　
+![EDA](EDA.png)  
+For example, Relation between mpg and weight,horsepower is below  
 ![](weight_power.png)　　
 x1 is weight, x2 i horsepower, y is mpg.  
 
