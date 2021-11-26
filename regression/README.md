@@ -5,6 +5,7 @@ Author: Minegishi Gouki
 ```
 pip install numpy
 pip install pandas
+pip install matplolib
 ```
 ## Data  
 ##### [Auto-mpg.csv](https://archive.ics.uci.edu/ml/datasets/Auto+MPG)
@@ -32,6 +33,14 @@ You can choose features below
 - "origin"
 
 Each features must be str type
+
+## Output value
+You can get selected feature list and L2 loss as below  
+```
+selected fetures: ['weight', 'horsepower']
+L2 loss 41.814607009631914
+```
+
 
 ## Result
 There are 7 features in this data.  

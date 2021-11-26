@@ -2,7 +2,6 @@ import numpy as np
 from numpy import linalg as LA
 import pandas as pd
 import argparse
-import itertools
 import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description="Process Regression")
