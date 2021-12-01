@@ -4,6 +4,7 @@ from tqdm import tqdm
 import collections
 import matplotlib.pyplot as plt
 import sys
+
 sys.path.append("../")
 from utils.distance import Euclid_d, Maharanovis_d, Manhattan_d
 import argparse
@@ -11,11 +12,13 @@ import argparse
 
 # 引数の設定
 parser = argparse.ArgumentParser(description="Process knn")
-parser.add_argument("-d","--distance",default='Eu', help="select distance ['Eu','Man','Mah']")
-parser.add_argument("-o","--output",default="output.png",help="output file name")
+parser.add_argument(
+    "-d", "--distance", default="Eu", help="select distance ['Eu','Man','Mah']"
+)
+parser.add_argument("-o", "--output", default="output.png", help="output file name")
+
 
 class KNN:
-
     def __init__(self):
         # dataの読み込み
         self.df = pd.read_csv("../data/iris.csv")
@@ -24,7 +27,7 @@ class KNN:
         # 共分散行列
         self.A = np.cov(self.data.T)
 
-    def predict(self,k,dist_type):
+    def predict(self, k, dist_type):
         acc_list = []
         # leave-one-out method
         for i, d in enumerate(self.data):
@@ -62,13 +65,13 @@ if __name__ == "__main__":
     knn = KNN()
     K_acc_list = []
     for k in tqdm(range(1, 31)):
-        acc = knn.predict(k,distance)
+        acc = knn.predict(k, distance)
         K_acc_list.append(acc)
     x = range(1, 31)
     y = K_acc_list
     fig = plt.figure()
     plt.plot(x, y)
-    plt.title(distance+" distance")
+    plt.title(distance + " distance")
     plt.xlabel("k")
     plt.ylabel("accuracy")
     fig.savefig(file_name)

@@ -2,23 +2,19 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from sklearn.decomposition import PCA
-from distance import Euclid_d
+import sys
+sys.path.append("../")
+from utils.distance import Euclid_d
 
 # dataの読み込み
-df = pd.read_csv("iris.csv")
+df = pd.read_csv("../data/iris.csv")
 df_data = df.loc[:, "sepal_length":"petal_width"]
 data = df_data.iloc[:].values
 
 fig = plt.figure()
-target_plot = fig.add_subplot(121)
+target_plot = fig.add_subplot(121,xlabel="petal_length",ylabel="petal_width")
 k_means_plot = fig.add_subplot(122)
 k_means_plot.grid()
-# 主成分分析
-pca = PCA(2)
-pca.fit(data)
-# データを主成分空間に写像
-feature = pca.transform(data)
 color_list1 = []
 for i in list(df.iloc[:, 4]):
     if i == "setosa":
@@ -27,9 +23,14 @@ for i in list(df.iloc[:, 4]):
         color_list1.append(1)
     elif i == "virginica":
         color_list1.append(2)
-target_plot.scatter(feature[:, 0], feature[:, 1], alpha=0.8, c=color_list1)
+target_plot.scatter(
+            df["petal_length"],
+            df["petal_width"],
+            c=color_list1,
+            s=50,
+            alpha=0.5,
+        )
 target_plot.grid()
-target_plot.set_title("PCA")
 
 
 first = np.random.choice(len(data), 3)
@@ -52,10 +53,11 @@ def update(j):
         new_centroids[j] = data[cluster == j].mean(axis=0)
     centroids = new_centroids
     for f in range(k):
-        k_means_plot.plot(feature[first[k], 0], feature[first[k], 1], "*")
-    k_means_plot.scatter(feature[:, 0], feature[:, 1], alpha=0.8, c=cluster)
+        k_means_plot.plot(df.loc[first[f],"petal_length"], df.loc[first[f],"petal_width"],marker="*",color='r')
+    k_means_plot.scatter(df["petal_length"], df["petal_width"], alpha=0.8, c=cluster)
     epoch += 1
     k_means_plot.set_title("epoch:" + str(epoch))
+    
 
 
 ani = FuncAnimation(fig, update, frames=30, interval=500)

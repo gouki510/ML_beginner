@@ -19,14 +19,12 @@ class TkGUI:
 
         self.canvas1 = tk.Canvas(self.root, width=400, height=300, relief="raised")
         self.canvas1.grid(row=0, column=0)
-
         self.label1 = tk.Label(self.root, text="k-Means Clustering")
         self.label1.config(font=("helvetica", 14))
         self.canvas1.create_window(200, 25, window=self.label1)
         self.label2 = tk.Label(self.root, text="Type Number of Clusters:")
         self.label2.config(font=("helvetica", 8))
         self.canvas1.create_window(200, 120, window=self.label2)
-
         self.entry1 = tk.Entry(self.root)
         self.canvas1.create_window(200, 140, window=self.entry1)
         self.df = pd.read_csv("../data/iris.csv")
@@ -51,7 +49,7 @@ class TkGUI:
         self.root.mainloop()
 
     def getKMeans(self):
-        self.km = Kmeans(self.df)
+        self.km = Kmeans()
         self.k = int(self.entry1.get())
         self.data = self.km.df.loc[:, "sepal_length":"petal_width"].values
         self.data_size, self.n_features = self.km.data.shape
