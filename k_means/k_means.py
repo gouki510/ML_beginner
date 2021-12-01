@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import argparse
 
 parser = argparse.ArgumentParser(description="K means Process")
-parser.add_argument("-k", "--k", default=3, help="k")
+parser.add_argument("-k", "--k",type=int, default=3, help="k")
 parser.add_argument("-d", "--distance", default="Eu", help="select distace [Eu,Man,Mah]")
 parser.add_argument("-o", "--output", default="output.png")
 
