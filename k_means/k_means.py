@@ -31,10 +31,12 @@ class Kmeans:
                 self.color_list1.append(1)
             elif i == "virginica":
                 self.color_list1.append(2)
+        self.center = None
 
     def main(self, k, dist_type):
         data_size, n_features = self.data.shape
         centroids = self.data[np.random.choice(len(self.data), k)]
+        self.center = centroids
         new_centroids = np.zeros((k, n_features))
         cluster = np.zeros(data_size)
         for epoch in range(300):
@@ -54,7 +56,7 @@ class Kmeans:
             centroids = new_centroids
         return cluster
 
-    def plot(self, file_name, dist_type,cluster):
+    def plot(self, file_name, dist_type,cluster,k):
         fig = plt.figure(figsize=(6, 6))
         plt.scatter(
             self.df["petal_length"],
@@ -64,6 +66,8 @@ class Kmeans:
             alpha=0.5,
         )
         plt.grid()
+        for i in range(k):
+            plt.plot(self.center[i][2],self.center[i][3],marker='*',color='red')
         plt.xlabel("petal_length")
         plt.ylabel("petal_width")
         plt.title(dist_type+" distance")
@@ -77,4 +81,4 @@ if __name__ == "__main__":
     file_name = args.output
     kmeans = Kmeans()
     cluster = kmeans.main(k, distance)
-    kmeans.plot(file_name,distance,cluster)
+    kmeans.plot(file_name,distance,cluster,k)
